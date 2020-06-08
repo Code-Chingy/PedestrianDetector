@@ -1,4 +1,5 @@
-./test
-./data_sets
-./detection_api/models/samples.npy
-./detection_api/models/labela.npy
+/test
+/data_sets
+/detection_api/models/samples.npy
+/detection_api/models/labels.npy
+/client_server
