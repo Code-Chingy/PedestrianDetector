@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pedestrian Detection - Authors</title>
+     <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/icons.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/responsee.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='assets/owl-carousel/owl.carousel.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='assets/owl-carousel/owl.theme.css') }}">
+    <!-- CUSTOM STYLE -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/template-style.css') }}">
+    <script type="text/javascript" src="{{ url_for('static',filename='assets/js/jquery-1.8.3.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='assets/js/jquery-ui.min.js') }}"></script>
+    <!--<script type="text/javascript" src="{{ url_for('static',filename='assets/js/validation.js') }}"></script>-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,800&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+  </head> 
+  
+  <body class="size-1140">
+
+    <!-- HEADER -->
+    <header role="banner">
+      <!-- Top Bar -->
+      <!-- Top Navigation -->
+      <nav class="background-white background-primary-hightlight">
+        <div class="line">
+          <div class="s-12 l-2">
+            <a href="index.html">
+              <h1> <span class="background-primary text-white logo-text">Pedestrian</span><span class="text-dark logo-text">Detector</span></h1>
+            </a>
+          </div>
+          <div class="top-nav s-12 l-10">
+            <p class="nav-text"></p>
+            <ul class="right chevron">
+              <li><a href="{{ url_for('home') }}">Home</a></li>
+              <li><a href="{{ url_for('live') }}">Live</a></li>
+              <li><a href="{{ url_for('docs') }}">Docs</a></li>
+              <li><a href="{{ url_for('authors') }}">Authors</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- MAIN -->
+    <main role="main">
+      <!-- Content -->
+      <article>
+        <header class="section-small-padding background-primary text-center">
+          <h1 class="text-white margin-bottom-0 text-size-50 text-thin text-line-height-1">Authors</h1>
+        </header>
+        <div class="section background-white">
+          <div class="line margin">
+              <p class="s-12 m-6 l-3 text-dark logo-text text-center center content-center-vertical margin-top-80">&</p>
+              <div class="s-12 m-6 l-3 left">
+                <div class="image-with-hover-overlay image-hover-zoom margin-bottom">
+                  <div class="image-hover-overlay background-primary"> 
+                    <div class="image-hover-overlay-content text-center padding-2x">
+                      <p>
+                      <h4 class="text-size-20">Bernard Atinga Azumah</h4>
+                      <h5>10660742</h5>
+                      </p>
+                    </div> 
+                  </div> 
+                  <img src="img/portfolio/thumb-02.jpg" alt="Bernard Atinga Azumah: 10660742" title="Portfolio Image 1" />
+                </div>	
+              </div>
+              <div class="s-12 m-6 l-3 right">
+                <div class="image-with-hover-overlay image-hover-zoom margin-bottom">
+                  <div class="image-hover-overlay background-primary"> 
+                    <div class="image-hover-overlay-content text-center padding-2x">
+                       <p>
+                      <h4 class="text-size-20">Other Guys Name</h4>
+                      <h5>106----</h5>
+                      </p>
+                    </div> 
+                  </div> 
+                  <img src="img/portfolio/thumb-09.jpg" alt="Other Guys Name: 106----" title="Portfolio Image 2" />
+                </div>	
+              </div>
+          </div>
+        </div> 
+      </article>
+    </main>
+
+    <script type="text/javascript" src="{{ url_for('static',filename='assets/js/responsee.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='assets/owl-carousel/owl.carousel.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='assets/js/template-scripts.js') }}"></script>
+
+  </body>
+</html>

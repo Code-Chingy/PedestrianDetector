@@ -57,11 +57,11 @@ class Config:
     max_sample: int = None
     img_resize: int = 700
 
-    # non maximum supression config
+    # non maximum suppression config
     non_max_suppression_threshold: float = .3
     # prediction result configs
     accuracy_threshold: float = .5
-    # pyramid gaussian configs
+    # gaussian pyramid configs
     downscale: float = 1.6
 
     # switch configs
@@ -150,15 +150,29 @@ class PedestrianDetector:
 
         :type config: Config
         """
-        self.constructed_svm = None
         self.config = config
+
+        self.constructed_model = None
         self.samples: list = []
         self.labels: list = []
         self.feat_size = 0
+
+        # attempting to load rcnn model
         f_rcnn_path = self.config.faster_rcnn_inception_v2_pb_path
         if f_rcnn_path is not None:
             self.f_rcnn_detector = RCNNPedestrianDetector(f_rcnn_path)
             self.__verbose('loaded faster rcnn inception pb')
+
+        # attempting to load hog desc model
+        if os.path.isfile(self.config.model_path):
+            try:
+                self.load(self.config.model_path)
+            except Exception as e:
+                self.__verbose(str(e), level='error')
+
+        # loading third party pedestrian detector
+        self.cv2HOG = cv2.HOGDescriptor()
+        self.cv2HOG.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 
     def set_class_dict(self, class_dict: dict):
         """
@@ -336,7 +350,7 @@ class PedestrianDetector:
                     self.__verbose(f'x: {x}, y: {y}, window shape: {im_window.shape}')
 
                     if im_window.shape[0] != min_wdw_sz[1] or im_window.shape[1] != min_wdw_sz[0]:
-                        print(f'continue: {im_window.shape}')
+                        self.__verbose(f'continue: {im_window.shape}')
                         continue
                     try:
                         hist = self._get_feature_for_image(im_window)
@@ -459,7 +473,7 @@ class PedestrianDetector:
             self.__verbose("done training production model")
             self._save(model, prod_save_name)
 
-        self.constructed_svm = model
+        self.constructed_model = model
 
         if save_dataset:
             np.save(self.config.model_path + '/labels.npy', labels)
@@ -488,7 +502,7 @@ class PedestrianDetector:
                     joblib.dump(model, self.config.model_path)
                     self.__verbose(f'saved model to {self.config.model_path}')
 
-    def __verbose(self, param, level='log'):
+    def __verbose(self, param, level: str = 'log'):
         if self.config.verbose:
             if level == 'log':
                 logger.info(param)
@@ -545,7 +559,7 @@ class PedestrianDetector:
             self.__verbose(f'image path \'{image_or_image_path}\' is not valid')
             raise FileNotFoundError(f'Image path \'{image_or_image_path}\' does not exist')
 
-        if not self.constructed_svm:
+        if not self.constructed_model:
             self.__verbose('model not constructed. run self.construct', level='error')
             raise Exception('model not constructed')
         gray_img = cv2.cvtColor(image.copy(), cv2.COLOR_BGR2GRAY)
@@ -562,7 +576,7 @@ class PedestrianDetector:
         min_wdw_sz = self.config.min_wdw_sz
         downscale = self.config.downscale
 
-        if self.constructed_svm is None:
+        if self.constructed_model is None:
             if not self.config.model_path or not os.path.exists(self.config.model_path):
                 self.__verbose('model path does not exist', level='error')
                 return
@@ -579,7 +593,7 @@ class PedestrianDetector:
 
             self.load(model_path)
 
-        clf = self.constructed_svm
+        clf = self.constructed_model
 
         # List to store the detections
         detections = []
@@ -622,16 +636,17 @@ class PedestrianDetector:
 
                 if prediction == 1:
                     accuracy = clf.decision_function(features)
-                    print(f'[{prediction}] total-count:{len(detections)} x:{x}, y:{y}, accuracy:{accuracy}')
+                    self.__verbose(f'[{prediction}] total-count:{len(detections)} x:{x}, y:{y}, accuracy:{accuracy}')
                     if clf.decision_function(features) > self.config.accuracy_threshold:
                         detections.append((int(x * (downscale ** scale)), int(y * (downscale ** scale)),
                                            accuracy, int(min_wdw_sz[0] * (downscale ** scale)),
                                            int(min_wdw_sz[1] * (downscale ** scale))))
 
-                        i, j, _, w, h = detections[-1]
-                        cv2.rectangle(p_visual, (i, j), (i + w, j + h), (0, 255, 0), thickness=2)
-                        cv2.imshow("detections", p_visual)
-                        cv2.waitKey(1)
+                        if self.config.visualize:
+                            i, j, _, w, h = detections[-1]
+                            cv2.rectangle(p_visual, (i, j), (i + w, j + h), (0, 255, 0), thickness=2)
+                            cv2.imshow("detections", p_visual)
+                            cv2.waitKey(1)
 
             scale += 1
 
@@ -700,11 +715,12 @@ class PedestrianDetector:
             for i in range(len(boxes)):
                 # Class 1 represents human
                 if classes[i] == 1 and scores[i] > self.config.accuracy_threshold:
+                    # y, x, h, w = boxes[i]
                     picks.append(boxes[i])
                     pick_scores.append(scores[i])
 
             if self.config.visualize:
-                for (y, x, h, w) in picks:
+                for (x, y, w, h) in picks:
                     cv2.rectangle(original, (x, y), (w, h), (0, 255, 0), 2)
 
                 plt.axis("off")
@@ -713,6 +729,21 @@ class PedestrianDetector:
                 plt.show()
 
             return pick_scores, picks
+
+    def detect_with_tp_cv2(self, image_or_image_path):
+        original = image_or_image_path
+
+        if isinstance(image_or_image_path, str):
+            original = cv2.imread(image_or_image_path)
+
+        if original is None:
+            self.__verbose(f'image path \'{image_or_image_path}\' is not valid')
+            raise FileNotFoundError(f'Image path \'{image_or_image_path}\' does not exist')
+
+        (boxes, _) = self.cv2HOG.detectMultiScale(original, winStride=(4, 4), padding=(8, 8), scale=1.05)
+        boxes = np.array([[x, y, x + w, y + h] for (x, y, w, h) in boxes])
+        picks = non_max_suppression(boxes, probs=None, overlapThresh=0.65)
+        return None, picks
 
     def load(self, model_path):
         self.__verbose('attempting to load model')
@@ -726,7 +757,7 @@ class PedestrianDetector:
                 self.__verbose('failed to load model from file', level='error')
                 raise ValueError(f'failed to load model from file \'{model_path}\'')
             else:
-                self.constructed_svm = SVMModelWrapper(model)
+                self.constructed_model = SVMModelWrapper(model)
                 self.__verbose('success loading model')
         else:
             self.__verbose('failed to load model!. check if file exists.', level='error')

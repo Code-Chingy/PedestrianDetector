@@ -2,4 +2,5 @@
 /data_sets
 /detection_api/models/samples.npy
 /detection_api/models/labels.npy
-/client_server
+/client_server/old
+/client_server/static/uploads

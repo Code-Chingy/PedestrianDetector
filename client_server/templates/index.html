@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pedestrian Detection - Home</title>
+    <!--<link rel="stylesheet" href="css/components.css">-->
+    <!--<link rel="stylesheet" href="css/icons.css">-->
+    <!--<link rel="stylesheet" href="css/responsee.css">-->
+    <!--<link rel="stylesheet" href="owl-carousel/owl.carousel.css">-->
+    <!--<link rel="stylesheet" href="owl-carousel/owl.theme.css">-->
+    <!--&lt;!&ndash; CUSTOM STYLE &ndash;&gt;-->
+    <!--<link rel="stylesheet" href="css/template-style.css">-->
+    <!--<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>-->
+    <!--<script type="text/javascript" src="js/jquery-ui.min.js"></script>    -->
+    <!--<script type="text/javascript" src="js/validation.js"></script> -->
+
+    <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/icons.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/responsee.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='assets/owl-carousel/owl.carousel.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='assets/owl-carousel/owl.theme.css') }}">
+    <!-- CUSTOM STYLE -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/template-style.css') }}">
+    <script type="text/javascript" src="{{ url_for('static',filename='assets/js/jquery-1.8.3.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='assets/js/jquery-ui.min.js') }}"></script>
+    <!--<script type="text/javascript" src="{{ url_for('static',filename='assets/js/validation.js') }}"></script>-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,800&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+  </head>
+  
+  <body class="size-1140">
+  
+    <!-- HEADER -->
+    <header role="banner">    
+      <!-- Top Bar -->
+      <!-- Top Navigation -->
+      <nav class="background-white background-primary-highlight">
+        <div class="line">
+          <div class="s-12 l-2">
+            <a href="index.html">
+              <h1> <span class="background-primary text-white logo-text">Pedestrian</span><span class="text-dark logo-text">Detector</span></h1>
+            </a>
+          </div>
+          <div class="top-nav s-12 l-10">
+            <p class="nav-text"></p>
+            <ul class="right chevron">
+              <li><a href="{{ url_for('home') }}">Home</a></li>
+              <li><a href="{{ url_for('live') }}">Live</a></li>
+              <li><a href="{{ url_for('docs') }}">Docs</a></li>
+              <li><a href="{{ url_for('authors') }}">Authors</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+    
+    <!-- MAIN -->
+    <main role="main">
+      <!-- Main Carousel -->
+
+      <section class="background-dark section-small-padding">
+
+        <div class="line">
+          <div class="carousel-fade-transition owl-carousel carousel-main carousel-nav-white carousel-wide-arrows">
+            <div class="item">
+              <div class="s-12 center">
+                <img src="{{ url_for('static',filename='assets/img/slider-1.jpg') }}" alt="">
+                <div class="carousel-content">
+                  <div class="padding-2x">
+                    <div class="s-12 m-12 l-8">
+                      <!--<p class="text-white text-s-size-20 text-m-size-40 text-l-size-60 margin-bottom-40 text-thin text-line-height-1">Prospera is the New Amazing HTML5 Template</p>-->
+                      <!--<p class="text-white text-size-16 margin-bottom-40">Duis autem vel eum iriure dolor in hendrerit in vulputate velit<br> esse molestie consequat, vel illum dolore eu feugiat nulla facilisis</p>  -->
+                    </div>                  
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="item">
+              <div class="s-12 center">
+                <img src="{{ url_for('static',filename='assets/img/slider-6.jpg') }}" alt="">
+                <div class="carousel-content">
+                  <div class="padding-2x">
+                    <div class="s-12 m-12 l-8">
+                      <!--<p class="text-white text-s-size-20 text-m-size-40 text-l-size-60 margin-bottom-40 text-thin text-line-height-1">With Fully Responsive Components</p>-->
+                      <!--<p class="text-white text-size-16 margin-bottom-30">Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis</p>    -->
+                    </div>                  
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>  
+        </div>
+
+        <form class="customform margin-top-20" action="/detect" method="POST" enctype="multipart/form-data">
+          <div class="line">
+              {{ form.hidden_tag() }}
+              <input class="background-white primary-color-dark" type="file" name="media" id="media">
+              <button class="button button-primary-stroke margin-left-15 right" type="submit">Upload</button>
+          </div>
+        </form>
+
+      </section>
+
+    </main>
+
+    <!--<script type="text/javascript" src="js/responsee.js"></script>-->
+    <!--<script type="text/javascript" src="owl-carousel/owl.carousel.js"></script>-->
+    <!--<script type="text/javascript" src="js/template-scripts.js"></script>-->
+
+    <script type="text/javascript" src="{{ url_for('static',filename='assets/js/responsee.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='assets/owl-carousel/owl.carousel.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='assets/js/template-scripts.js') }}"></script>
+
+   </body>
+</html>
