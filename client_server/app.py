@@ -2,13 +2,11 @@ import os
 
 import cv2
 import imutils
-import numpy as np
 from flask import Flask, redirect, render_template, request, Response
 from flask_bootstrap import Bootstrap
 # from flask_mail import Mail, Message
 from flask_uploads import UploadSet, configure_uploads, extension, patch_request_class, IMAGES
 from flask_wtf import FlaskForm
-from imutils.object_detection import non_max_suppression
 from wtforms import MultipleFileField
 from wtforms.validators import InputRequired
 
@@ -28,7 +26,7 @@ app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024
 configure_uploads(app, (photos, videos))
 patch_request_class(app)
 
-app.jinja_env.globals.update(len=len)
+# app.jinja_env.globals.update(len=len)
 
 
 class DefaultConfig(Config):

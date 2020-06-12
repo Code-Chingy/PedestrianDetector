@@ -3,21 +3,18 @@ from src.detection_api.base.pedestrian_detector import PedestrianDetector, Confi
 
 
 class DefaultConfig(Config):
-    model_path = 'C:/Users/Otc_Chingy/PycharmProjects/AdvancedPython/ai_end_of_sem_projects/' \
-                 'pedestrian_detection/src/detection_api/models'
+    model_path = 'models'
     verbose = True
 
 
 detector = PedestrianDetector(DefaultConfig())
 detector.set_class_dict({
     'positive': {
-        'path': 'C:/Users/Otc_Chingy/PycharmProjects/AdvancedPython/ai_end_of_sem_projects/'
-                'pedestrian_detection/src/data_sets/positive(960x720)',
+        'path': '../data_sets/positive(960x720)',
         'class': 1
     },
     'negative': {
-        'path': 'C:/Users/Otc_Chingy/PycharmProjects/AdvancedPython/ai_end_of_sem_projects/'
-                'pedestrian_detection/src/data_sets/negative(720x960)',
+        'path': '../data_sets/negative(720x960)',
         'class': -1,
     }
 })
